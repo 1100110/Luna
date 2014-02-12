@@ -9,7 +9,7 @@ Be simple, elegant, extendible, easy.
 
 TODO
 ----
-- [x] Lexing
+- [X] Lexing
 - [ ] Parsing
 - [ ] AST
 - [ ] C, D Types for Embedding and Extending

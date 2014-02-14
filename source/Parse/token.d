@@ -4,46 +4,46 @@ module Parse.token;
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 import std.conv: to;
+import std.traits;
 
-enum Type :ubyte {
+enum Type {
     Symbol,     String,
     Integer,    Float,
     Open,       Close,
-    Quote,      Macro,
+    List
+}
+
+auto token(D)(D d, Type t, size_t r = 1, size_t c = 1) 
+    if(isSomeString!D || isNumeric!D) {
+    return Token(d, t, r, c);
 }
 
 struct Token {
-    uint row;
-    uint col;
-    union {
-        uint number;
-        string text;
-    }
+    size_t row;
+    size_t col;
     Type   type;
-    
-    this(string s, Type t, uint r, uint c) {
+union {
+    size_t number;
+    string text;
+}
+    alias type this;
+
+    this(string s, Type t, size_t r, size_t c) {
         this.text = s;
         this.type = t;
         this.row  = r;
         this.col  = c;
 
         if(this.type == Type.Integer) 
-            this.number = this.text.to!uint;
+            this.number = this.text.to!size_t;
     }
 
     string toString() const {
-        if(type == Type.Integer) {
-            return "Token("~this.number.to!string ~", "~ row.to!string ~", "~ col.to!string~")";
-        }
+        import std.string: format;
+
+        if(type == Type.Integer)
+            return format("%s<%s:%s>", this.number.to!string, row.to!string, col.to!string);
         else
-            return "Token(\""~this.text~"\""~", "~ row.to!string ~", "~ col.to!string~")";
+            return format("%s<%s:%s>", this.text, row.to!string, col.to!string);
     }
 }
-
-immutable SpecialChars = [
-    '(', ')',
-    '{', '}',
-    '[', ']',
-    '\"','\'', 
-    '#',
-];

@@ -2,4 +2,5 @@ module Parse;
 
 public import 
     Parse.token, 
-    Parse.parser;
+    Parse.parser,
+    Parse.ast;

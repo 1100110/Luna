@@ -3,11 +3,14 @@
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
-import std.algorithm, std.array, std.stdio, std.range;
-version(LDC) import Parse.parser, Parse.token;
-else         import Parse;
+import std.stdio;
+version(LDC) import luna.parse.parser, luna.parse.token;
+else         import luna.parse;
+
 
 void main() {
-    auto tree = stdin.lex;
-    writefln("%s:%s", tree, Token.sizeof);
+    auto test = "(define (add a b) (+ a b))";
+    //auto tree = stdin.lex;
+    auto tree = test.lex;
+    writefln("%s", tree);
 }
